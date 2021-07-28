@@ -1,0 +1,95 @@
+{% extends 'index.html' %}
+
+{% block body %}
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+			  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+				<h1 class="h2">Cari Pasien</h1>
+			  </div>
+				<div id="Loader">
+				<div class="d-flex justify-content-center">
+				  <div class="spinner-border text-success"  style="width: 10rem; height: 10rem;" role="status">
+					<span class="visually-hidden">Loading...</span>
+				  </div>
+				</div>
+				</div>
+			  <div class="container">
+			  <form action="/cari_data" method="POST">
+			  <div class="col-md-2">
+					<label for="validationCustom04" class="form-label">Bulan</label>
+					<select class="form-select" id="validationCustom04" name="q" required>
+					  <option selected disabled value="">Pilih...</option>
+					  <option value="January">01</option>
+					  <option value="February">02</option>
+					  <option value="March">03</option>
+					  <option value="April">04</option>
+					  <option value="May">05</option>
+					  <option value="June">06</option>
+					  <option value="July">07</option>
+					  <option value="August">08</option>
+					  <option value="September">09</option>
+					  <option value="October">10</option>
+					  <option value="November">11</option>
+					  <option value="December">12</option>
+					</select>
+			  </div>
+			  <div class="col-md-2">
+					<label for="validationCustom04" class="form-label">Tahun</label>
+					<select class="form-select" id="validationCustom04" name="q" required>
+					  <option selected disabled value="">Pilih...</option>
+					  <option value="2021">2021</option>
+					</select>
+			  </div>
+			  <br />
+			  <button class="btn btn-sm btn-success" type="submit">Cari</button>
+			  </form>
+			 {% with messages = get_flashed_messages() %}
+				  {% if messages %}
+					{% for message in messages %}
+					 <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 5px;">
+					  <strong>{{message}}</strong>
+					  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+					{% endfor %}
+				  {% endif %}
+			{% endwith %}
+			{% if pesan %}
+				<div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin: 5px;">
+					  <strong>{{pesan}}</strong>
+					  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			{% endif %}
+				  <div class="card" style="margin: 10px;">
+					  <div class="card-header">
+						Tabel Pasien
+					  </div>
+					  <div class="card-body">
+							<table class="table table-bordered table-sm">
+							 <thead class="table table-dark">
+								<tr>
+								  <th scope="col">No.</th>
+								  <th scope="col">Nama</th>
+								  <th scope="col">Dignosa</th>
+								  <th scope="col">Dokter</th>
+								  <th scope="col">Tanggal Periksa</th>
+								</tr>
+							  </thead>
+							  <tbody>
+							  {% for dt in datanya %}
+								<tr>
+								  <th scope="row">{{loop.index}}</th>
+								  <td>{{dt.nama}}</td>
+								  <td>{{dt.diagnosa}}</td>
+								  <td>{{dt.user.username}}</td>
+								  <td>{{dt.tanggal}}</td>
+								</tr> 
+							  {% endfor %}
+							  </tbody>
+							</table>
+					  </div>
+					</div>
+					{% if tombol == "tombol" %}
+					<a class="btn btn-danger" href="/cetak_pdf/{{keyword}}" target="new">Cetak Laporan</a>
+					{% endif %}
+			  </div>
+{% endblock %}
